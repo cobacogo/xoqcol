@@ -1,1 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Premium Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:Inter,sans-serif;
+background:#0a0a0a;color:#fff;
+background-image:radial-gradient(circle at top,#1a1a1a,#0a0a0a 45%);
+}
+header{
+position:sticky;top:0;z-index:99;
+display:flex;justify-content:space-between;align-items:center;
+padding:16px 20px;
+background:rgba(10,10,10,.72);
+backdrop-filter:blur(14px);
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+.logo{font-size:28px;font-weight:800;color:#e50914}
+.search{
+width:180px;padding:10px 14px;border:none;border-radius:999px;
+background:#181818;color:#fff;outline:none
+}
+.hero{
+margin:18px;
+border-radius:24px;
+padding:50px 24px;
+background:linear-gradient(135deg,#1b1b1b,#101010);
+border:1px solid rgba(255,255,255,.08);
+box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+.hero h1{font-size:34px}
+.hero p{color:#aaa;margin-top:8px}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(165px,1fr));
+gap:18px;
+padding:18px;
+}
+.card{
+display:block;
+text-decoration:none;
+color:#fff;
+border-radius:18px;
+overflow:hidden;
+background:#141414;
+transition:.35s;
+border:1px solid rgba(255,255,255,.06);
+opacity:0;
+transform:translateY(20px);
+animation:fade .5s forwards;
+}
+.thumb{
+position:relative;
+aspect-ratio:2/3;
+background:#222;
+overflow:hidden;
+}
 
+.thumb canvas{
+width:100%;
+height:100%;
+display:block;
+object-fit:cover;
+position:absolute;
+top:0;
+left:0;
+z-index:1;
+}
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+background:#e50914;
+color:#fff;
+padding:5px 9px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+z-index:999;
+pointer-events:none;
+}
+.watched{
+position:absolute;
+bottom:10px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(34,197,94,.9);
+color:#fff;
+padding:5px 10px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+z-index:999;
+display:none;
+}
+
+.thumb.viewed .watched{
+display:block;
+}
+  
+.info{padding:12px}
+.title{
+font-size:15px;font-weight:700;
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.sub{font-size:12px;color:#999;margin-top:4px}
+footer{
+text-align:center;padding:30px;color:#666
+}
+@keyframes fade{to{opacity:1;transform:none}}
+@media(max-width:600px){
+.grid{grid-template-columns:repeat(3,1fr);gap:10px;padding:10px}
+.hero{padding:30px 18px}
+.hero h1{font-size:26px}
+.search{width:120px}
+}
+.pagination{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:8px;
+padding:20px;
+}
+
+.pagination button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#1c1c1c;
+color:#fff;
+cursor:pointer;
+}
+
+.pagination button.active{
+background:#e50914;
+}
+.top-menu{
+display:flex;
+justify-content:center;
+gap:12px;
+padding:0 18px 18px;
+flex-wrap:wrap;
+}
+
+.menu-btn{
+padding:12px 22px;
+background:#181818;
+color:#fff;
+text-decoration:none;
+font-weight:700;
+border-radius:999px;
+border:1px solid rgba(255,255,255,.08);
+transition:.3s;
+}
+
+.menu-btn:hover{
+background:#e50914;
+transform:translateY(-2px);
+}
+.running-text{
+margin:12px 0;
+padding:8px 12px;
+background:#181818;
+border:1px solid rgba(255,255,255,.08);
+border-radius:10px;
+color:#e50914;
+font-size:14px;
+font-weight:600;
+overflow:hidden;
+}
+
+.running-text marquee{
+width:100%;
+}
+.announcement{
+margin:0 18px 18px;
+padding:12px 16px;
+background:linear-gradient(90deg,#e50914,#ff3b3b);
+color:#fff;
+font-size:14px;
+font-weight:600;
+text-align:center;
+border-radius:12px;
+box-shadow:0 10px 20px rgba(229,9,20,.25);
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+0%,100%{transform:scale(1);}
+50%{transform:scale(1.02);}
+}  
+.skeleton{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(90deg,#1d1d1d 25%,#2b2b2b 50%,#1d1d1d 75%);
+background-size:200% 100%;
+animation:skeleton 1.2s infinite;
+z-index:0;
+}
+
+@keyframes skeleton{
+0%{background-position:200% 0;}
+100%{background-position:-200% 0;}
+}
+.donation-box{
+margin:20px 18px;
+padding:20px;
+background:#181818;
+border:1px solid rgba(255,255,255,.08);
+border-radius:16px;
+text-align:center;
+}
+
+.donation-box h3{
+margin-bottom:8px;
+font-size:22px;
+color:#fff;
+}
+
+.donation-box p{
+color:#bbb;
+font-size:14px;
+margin-bottom:16px;
+}
+
+.donate-btn{
+display:inline-block;
+padding:12px 28px;
+background:#22c55e;
+color:#fff;
+text-decoration:none;
+font-weight:700;
+border-radius:999px;
+transition:.3s;
+}
+
+.donate-btn:hover{
+transform:scale(1.05);
+}
+.favorite{
+position:absolute;
+top:10px;
+right:10px;
+width:30px;
+height:30px;
+border-radius:50%;
+background:rgba(0,0,0,.6);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+cursor:pointer;
+z-index:999;
+user-select:none;
+}
+.open-link{
+display:block;
+text-decoration:none;
+color:inherit;
+}
+.logo{
+font-size:28px;
+font-weight:800;
+color:#e50914;
+text-decoration:none;
+}
+  
+  
+</style>
+</head>
+<body>
+
+<header>
+
+<a href="https://xfreebokep.xyz/" class="logo">
+XFREEBOKEP
+</a>
+
+<input class="search" id="search" placeholder="Search">
+
+</header>
+
+<section class="hero">
+<h1>Asupan Code</h1>
+
+<div class="running-text">
+<marquee scrollamount="5">
+🔥 Updated Every Day • Premium Links • Fast Access • No Fake Links • Enjoy!
+</marquee>
+</div>
+
+<p>Update setiap hari</p>
+</section>
+  
+<div class="top-menu">
+
+<a href="https://xfreebokep.xyz/caratonton/" class="menu-btn">
+🎬 Tutorial Watch
+</a>
+  
+<a href="https://xfreebokep.xyz/Disclaimer/" class="menu-btn">
+⚠️ Disclaimer
+</a>
+
+</div>
+
+  
+<div class="announcement">
+📢 New Collection Added Today • Check The Latest Updates Below!
+</div>  
+
+    
+<div class="grid" id="gallery"></div>
+
+<div id="pagination" class="pagination"></div>
+
+  
+<div class="top-menu">
+
+<a href="#" class="menu-btn" onclick="event.preventDefault(); showFavorites();">
+❤️ My Favorites
+</a>
+
+<a href="#" class="menu-btn" onclick="event.preventDefault(); favoriteMode=false; searchMode=false; search.value=''; render(items);">
+🏠 All Content
+</a>
+
+</div>
+
+<div class="donation-box">
+    <h3>❤️ Support This Website</h3>
+    <p>Your donation helps us keep updating new content every day.</p>
+
+    <a href="https://xfreebokep.xyz/donate/" target="_blank" class="donate-btn">
+        ☕ Donate
+    </a>
+</div>
+
+  
+<footer>© 2026 xfreebokep</footer>
+
+<script>
+const gallery = document.getElementById("gallery");
+const search = document.getElementById("search");
+const pagination = document.getElementById("pagination");
+
+let items = [];
+
+const PER_PAGE = 30;
+let currentPage = 1;
+let favoriteMode = false;
+let searchMode = false;
+
+Promise.allSettled([
+    fetch("databkp/zoxo2.json").then(r => r.json()),
+    fetch("databkp/zoxo1.json").then(r => r.json()),
+    fetch("databkp/zoxo3.json").then(r => r.json()),
+    fetch("databkp/zoxo4.json").then(r => r.json()),
+    fetch("databkp/zoxo5.json").then(r => r.json())
+]).then(results => {
+
+    items = [];
+
+    results.forEach(result => {
+
+        if(result.status === "fulfilled"){
+
+            items.push(...result.value.reverse());
+
+        }
+
+    });
+
+    render(items);
+
+}).catch(()=>{
+
+    gallery.innerHTML =
+    "<p style='padding:20px;color:#999'>Data tidak ditemukan.</p>";
+
+});
+
+  
+function render(list){
+
+gallery.innerHTML="";
+
+const totalPages = Math.ceil(list.length / PER_PAGE);
+
+if(currentPage > totalPages) currentPage = 1;
+
+const start = (currentPage - 1) * PER_PAGE;
+const end = start + PER_PAGE;
+
+const pageItems = list.slice(start, end);
+
+if(pageItems.length===0){
+
+if(favoriteMode){
+
+gallery.innerHTML=`
+<div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
+<h2>❤️ Favorit Anda Masih Kosong</h2>
+<p style="margin-top:10px;color:#999;">
+Tambahkan asupan favorit Anda dengan menekan ikon ❤️ pada setiap konten.
+</p>
+</div>
+`;
+
+}else{
+
+gallery.innerHTML=`
+<div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
+<h2>🔍 Hasil pencarian tidak ditemukan</h2>
+<p style="margin-top:10px;color:#999;">
+Konten yang Anda cari belum tersedia.
+</p>
+</div>
+`;
+
+}
+
+pagination.innerHTML="";
+return;
+
+}
+  
+pageItems.forEach((item,i)=>{
+
+gallery.innerHTML += `
+<div class="card">
+
+<div class="thumb" data-id="${start+i}" data-img="${item.img}">
+<div class="skeleton"></div>
+
+<div class="favorite">🤍</div>
+
+${!favoriteMode && !searchMode && start+i < 6
+? '<div class="badge">NEW</div>'
+: ''}
+<div class="watched">✓ Watched</div>
+
+</div>
+
+<div class="info">
+
+<a href="${item.link}" target="_blank" class="open-link">
+
+<div class="title">${item.title||"xfreebkp"}</div>
+
+<div class="sub">Click to Open</div>
+
+</a>
+
+</div>
+
+</div>
+`;
+});  
+
+pagination.innerHTML="";
+
+if(currentPage>1){
+
+pagination.innerHTML+=`
+<button onclick="changePage(${currentPage-1})">◀ Prev</button>
+`;
+
+}
+
+const maxVisible = 3;
+
+let startPage = Math.max(1, currentPage - 1);
+let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+if(endPage - startPage < maxVisible - 1){
+    startPage = Math.max(1, endPage - maxVisible + 1);
+}
+
+for(let i = startPage; i <= endPage; i++){
+    pagination.innerHTML += `
+    <button class="${i===currentPage?'active':''}"
+    onclick="changePage(${i})">${i}</button>`;
+}
+
+if(currentPage<totalPages){
+
+pagination.innerHTML+=`
+<button onclick="changePage(${currentPage+1})">Next ▶</button>
+`;
+
+}
+
+renderCanvas();
+markWatched();
+loadFavorites();
+}
+
+function renderCanvas(){
+
+const observer = new IntersectionObserver((entries)=>{
+
+entries.forEach(entry=>{
+
+if(!entry.isIntersecting) return;
+
+const el = entry.target;
+
+if(el.querySelector("canvas")){
+observer.unobserve(el);
+return;
+}
+
+let img = new Image();
+img.src = el.dataset.img;
+
+img.onload = ()=>{
+
+let canvas = document.createElement("canvas");
+let ctx = canvas.getContext("2d");
+
+canvas.width = img.width;
+canvas.height = img.height;
+
+ctx.drawImage(img,0,0);
+
+const skeleton = el.querySelector(".skeleton");
+if(skeleton) skeleton.remove();
+
+el.appendChild(canvas);
+
+observer.unobserve(el);
+
+};
+
+});
+
+},{
+rootMargin:"300px"
+});
+
+document.querySelectorAll(".thumb").forEach(el=>{
+
+observer.observe(el);
+
+});
+
+}
+function changePage(page){
+
+currentPage = page;
+
+render(items);
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+  }
+let watched = {};
+
+function markWatched(){
+
+document.querySelectorAll(".card").forEach(card=>{
+
+const thumb = card.querySelector(".thumb");
+const id = thumb.dataset.id;
+const link = card.querySelector(".open-link");
+
+if(watched[id]){
+    thumb.classList.add("viewed");
+}
+
+if(link){
+
+link.addEventListener("click",()=>{
+
+setTimeout(()=>{
+
+watched[id] = true;
+thumb.classList.add("viewed");
+
+},500);
+
+});
+
+}
+
+});
+
+}
+    
+search.oninput=()=>{
+
+currentPage = 1;
+
+const q = search.value.toLowerCase();
+
+searchMode = q !== "";
+
+favoriteMode = false;
+
+render(
+items.filter(x=>
+(x.title||"").toLowerCase().includes(q)
+)
+
+);
+
+}
+
+function loadFavorites(){
+
+let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+document.querySelectorAll(".favorite").forEach((btn,index)=>{
+
+const id = document.querySelectorAll(".open-link")[index].href;
+
+if(favorites.includes(id)){
+btn.textContent = "❤️";
+}
+
+btn.onclick = function(e){
+
+e.preventDefault();
+e.stopPropagation();
+
+if(favorites.includes(id)){
+
+favorites = favorites.filter(x=>x!==id);
+btn.textContent = "🤍";
+
+}else{
+
+favorites.push(id);
+btn.textContent = "❤️";
+
+}
+
+localStorage.setItem("favorites",JSON.stringify(favorites));
+
+};
+
+});
+
+}  
+function showFavorites(){
+
+favoriteMode = true;
+
+const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+const favItems = items.filter(item =>
+    favorites.includes(item.link)
+);
+
+currentPage = 1;
+
+render(favItems);
+
+}
+  
+(function(){
+
+function loadHistats(){
+
+  try{
+
+    var _Hasync = window._Hasync = window._Hasync || [];
+
+    _Hasync.push(['Histats.start', '1,5035010,4,0,0,0,00000000']);
+    _Hasync.push(['Histats.fasi', '1']);
+    _Hasync.push(['Histats.track_hits', '']);
+
+    var hs = document.createElement('script');
+    hs.async = true;
+    hs.src = 'https://s10.histats.com/js15_as.js';
+
+    document.head.appendChild(hs);
+
+  }catch(e){}
+
+}
+
+/* delay biar ringan */
+setTimeout(loadHistats, 1500);
+
+})();  
+  
+</script>
+
+</body>
+</html>
